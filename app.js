@@ -5,8 +5,17 @@ const express = require("express");
 const app = express(); // kind of saving all the function of express in this variable like an object from the classexpress
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
-//after this line we wre going to call some function from express using the variable app
-const productRoutes = require("./api/routes/product.js"); // this variable is kind of pointing the file product.js so that all the middlware of app.use using this variable will go there
+const mongoose = require("mongoose");
+require("dotenv").config();
+console.log(process.env.MONGODB_Url);
+mongoose
+  .connect(process.env.MONGODB_Url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(console.log("database connected !!"));
+
+const productRoutes = require("./api/routes/product.js"); //this variable is kind of pointing the file product.js so that all the middlware of app.use using this variable will go there
 const orderRoutes = require("./api/routes/order");
 
 app.use(morgan("dev")); // help us to see the type of request that we have made , the status and the route we used

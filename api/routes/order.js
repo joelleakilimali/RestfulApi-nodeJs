@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Order = require("../models/order");
 const Product = require("../models/product");
-
+// get all the oders
 router.get("/", (req, res, next) => {
   Order.find()
     .select("_id product quatity")

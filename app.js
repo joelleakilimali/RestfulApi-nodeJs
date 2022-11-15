@@ -7,7 +7,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 require("dotenv").config();
-console.log(process.env.MONGODB_Url);
+
 mongoose
   .connect(process.env.MONGODB_Url, {
     useNewUrlParser: true,
@@ -17,6 +17,7 @@ mongoose
 
 const productRoutes = require("./api/routes/product.js"); //this variable is kind of pointing the file product.js so that all the middlware of app.use using this variable will go there
 const orderRoutes = require("./api/routes/order");
+const userRoutes = require("./api/routes/user");
 
 app.use(morgan("dev")); // help us to see the type of request that we have made , the status and the route we used
 app.use(bodyParser.urlencoded({ extended: false })); // determine type of data we gonna parse
@@ -39,6 +40,7 @@ app.use((req, res, next) => {
 // Routes to handle
 app.use("/products", productRoutes);
 app.use("/orders", orderRoutes);
+app.use("/users", userRoutes);
 
 //if we enter a route that is not valid it will come here (1)
 app.use((req, res, next) => {

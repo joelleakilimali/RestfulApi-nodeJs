@@ -5,7 +5,7 @@ const product = require("../models/product");
 const Product = require("../models/product");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
-
+const checkAuth = require("../middleware/checkauth");
 router.get("/", (req, res, next) => {
   Product.find()
     .select(" name price _id")
@@ -37,7 +37,7 @@ router.get("/", (req, res, next) => {
 
 // creation of product
 
-router.post("/", upload.single("productImage"), (req, res, next) => {
+router.post("/", checkAuth, upload.single("productImage"), (req, res, next) => {
   console.log(req.file);
   const product = new Product({
     _id: new mongoose.Types.ObjectId(),

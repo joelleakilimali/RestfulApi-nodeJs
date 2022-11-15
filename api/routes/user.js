@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require("../models/user");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-
+const jwt = require("jsonwebtoken");
 router.post("/", (req, res, next) => {
   User.findOne({ email: req.body.email })
     .exec()
@@ -53,14 +53,25 @@ router.post("/login", (req, res, next) => {
           console.log("failed");
           return res.status(401).json({ error: "Auth failed " });
         } else if (result) {
-          console.log("ok");
+          const token = jwt.sign(
+            {
+              email: user.email,
+              _id: user._id,
+            },
+            process.env.TOKEN,
+            {
+              expiresIn: "1h",
+            }
+          );
 
-          return res.status(200).json({ message: "login successfuly" });
+          return res
+            .status(200)
+            .json({ message: "login successfuly", token: token });
         }
       });
     })
     .catch((err) => {
-      res.status(400).json({ error: err });
+      return res.status(400).json({ error: err });
     });
 });
 

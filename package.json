@@ -14,9 +14,9 @@
   ],
   "author": "joelle akilimali",
   "license": "ISC",
-  "bin" : {
-    "execute" : "index.js"
-} ,
+  "bin": {
+    "execute": "server.js"
+  },
   "dependencies": {
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",

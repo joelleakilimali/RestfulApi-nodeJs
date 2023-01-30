@@ -1,4 +1,6 @@
 // here we are creating our server and handle everything concerning it
+//#!/usr/bin/env node//
+
 require("dotenv").config();
 
 const http = require("http");

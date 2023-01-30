@@ -1,9 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
+const Basket = require("../controllers/basket");
+
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
 router.post("/", (req, res, next) => {
   User.findOne({ email: req.body.email })
     .exec()
@@ -17,6 +20,7 @@ router.post("/", (req, res, next) => {
           email: req.body.email,
           password: bcrypt.hashSync(req.body.password, 8),
         });
+        console.log(user);
         user
           .save()
           .then((result) => {
@@ -36,6 +40,8 @@ router.post("/", (req, res, next) => {
           .catch((err) => {
             res.status(500).json({ error: err });
           });
+        const theUser = User.findOne({ email: req.body.email });
+        console.log("id :", theUser.id);
       }
     });
 });
@@ -85,4 +91,25 @@ router.delete("/:userId", (req, res, next) => {
       res.status(400).json({ error: err });
     });
 });
+router.get("/", (req, res, next) => {
+  User.find()
+    .exec()
+    .then((users) => {
+      res.status(200).json({ message: users });
+    })
+    .catch((err) => {
+      res.status(400).json({ error: err });
+    });
+});
+router.get("/:id", (req, res, next) => {
+  User.findById(req.params.id)
+    .exec()
+    .then((users) => {
+      res.status(200).json({ message: users });
+    })
+    .catch((err) => {
+      res.status(400).json({ error: err });
+    });
+});
+
 module.exports = router;
